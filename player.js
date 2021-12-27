@@ -1,1 +1,3 @@
-console.log("working")
+function runMyPlayer() {
+    console.log("Its working!")
+}
