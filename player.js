@@ -1,3 +1,3 @@
-function runMyPlayer() {
-    console.log("Its working!")
+window.myFunc = function myFunc() {
+    console.log("helooo")
 }
