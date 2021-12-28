@@ -17,14 +17,7 @@ function addGuideCss(css) {
     $('.guide-css').html(css)
 }
 
-const getJsonpGuide = function(guide) {
-    addGuideCss(guide.data.css)
-    addTiplates(guide.data.tiplates)
-    // showFirstTooltip(guide.data.structure.steps)
-}
-
-function addTiplates(tiplates) {
-    console.log(tiplates)
+function addTipWrapper(tiplates) {
     $('body').append(
         '<div  class="sttip">' +
         '<div class="tooltip in">' +
@@ -34,6 +27,27 @@ function addTiplates(tiplates) {
         '</div></div></div>')
     $('.popover-inner').html(tiplates.tip)
     //$('.popover-inner').append(tiplates.hoverTip)
+}
+
+function loadTipContent(stepCount, steps) {
+    currStep = steps[stepCount]
+    if(currStep.action.type=="closeScenario")
+        $(".sttip").hide()
+    else {
+        content = currStep.action.contents['#content']
+        $("div[data-iridize-id=content]").html(content)
+        $("span[data-iridize-role=stepCount]").text(stepCount+1)
+        $("span[data-iridize-role=stepsCount]").text(steps.length-1)
+        $(".next-btn").click( function() {
+                loadTipContent(stepCount+1, steps)
+        })
+    }
+}
+
+const getJsonpGuide = function(guide) {
+    addGuideCss(guide.data.css)
+    addTipWrapper(guide.data.tiplates)
+    loadTipContent(0, guide.data.structure.steps)
 }
 
 window.runGls = function runGls() {
