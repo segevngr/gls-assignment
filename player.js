@@ -1,3 +1,4 @@
+// Loads JsonP guide
 function loadGuide() {
     const url = 'https://guidedlearning.oracle.com/player/latest/api/scenario/get/v_IlPvRLRWObwLnV5sTOaw/5szm2kaj/?callback=guideCallback&refresh=true&env=dev&type=startPanel&vars%5Btype%5D=startPanel&sid=none&_=1582203987867'
     $('head').append(
@@ -5,6 +6,7 @@ function loadGuide() {
     )
 }
 
+// Loads external CSS given
 function loadCSS() {
     const url = 'https://guidedlearning.oracle.com/player/latest/static/css/stTip.css'
     $('head').append(
@@ -12,6 +14,7 @@ function loadCSS() {
     )
 }
 
+// Loads the tiplate css given at the json guide
 function addGuideCss(css) {
     $('head').append('<style class="guide-css"></style>');
     $('.guide-css').html(css);
@@ -22,7 +25,8 @@ function addGuideCss(css) {
     )
 }
 
-function addTipWrapper(tiplates) {
+// Adds the tip and its HTML wrapper to the DOM
+function addTip(tiplates) {
     $('body').append(
         '<div  class="sttip">' +
         '<div class="tooltip in">' +
@@ -36,6 +40,7 @@ function addTipWrapper(tiplates) {
     });
 }
 
+// Puts the tip HTML in jQueryUI floating dialog and sets its appropriate location
 function setTipLocation(step) {
     selector = $(step.action.selector);
     if( !selector.length) {
@@ -52,7 +57,8 @@ function setTipLocation(step) {
     });
 }
 
-
+// Sets the tip data according to the current step in the guide
+// Triggers next steps data-setups
 function setTipData(stepId, stepCount, steps) {
     currStep = null;
     for(let i=0; i<steps.length; i++){
@@ -87,13 +93,15 @@ function setTipData(stepId, stepCount, steps) {
     }
 }
 
+// Jsonp guide callback function
 const guideCallback = function (guide) {
     addGuideCss(guide.data.css);
-    addTipWrapper(guide.data.tiplates);
+    addTip(guide.data.tiplates);
     firstStepId = guide.data.structure.steps[0].id;
     setTipData(firstStepId, 1, guide.data.structure.steps);
 }
 
+// Main function
 window.runGls = function runGls() {
     loadCSS();
     loadGuide();
